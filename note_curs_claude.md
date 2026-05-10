@@ -10,3 +10,21 @@ desenare si prezentare:
 
 excalidraw.com - whiteboard, desenat cu AI si transformat in cod HTML, CSS si JS, se pot desena wireframe-uri si prototipuri - https://next.excalidraw.com/?gemini-app=true - link cu AI integrat.
 
+
+API key:
+AIzaSyCThSSP4I9D8YIApher83hTx3gzvbC3pyQ
+
+Name:
+Gemini API Key
+
+Project name:
+projects/1023904387025
+
+Project number:
+1023904387025
+
+
+https://generativelanguage.googleapis.com/v1beta/openai/
+
+
+gemini-1.5-flash

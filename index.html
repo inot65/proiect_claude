@@ -1,26 +1,503 @@
 <!DOCTYPE html>
 <html lang="ro">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Salut Toni</title>
-    <style>
-        body {
-            background-color: #000080;
-            color: white;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            font-size: 3rem;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resend · Email for developers</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root {
+      color-scheme: dark;
+    }
+    html, body {
+      margin: 0;
+      min-height: 100%;
+      background-color: #02060f;
+      color: #f8fafc;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    body {
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(56, 189, 248, 0.14), transparent 20%),
+        radial-gradient(circle at 90% 15%, rgba(168, 85, 247, 0.14), transparent 20%),
+        radial-gradient(circle at 75% 80%, rgba(59, 130, 246, 0.06), transparent 30%),
+        linear-gradient(180deg, #02060f 0%, #050911 100%);
+    }
+    .glass-card {
+      background: rgba(12, 18, 33, 0.7);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 40px 120px rgba(0, 0, 0, 0.35);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(148, 163, 184, 0.2);
+      box-shadow: 0 50px 160px rgba(56, 189, 248, 0.15);
+      transform: translateY(-4px);
+    }
+    .glow-button {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .glow-button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 24px 60px rgba(96, 165, 250, 0.22);
+    }
+    .hero-glow {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .hero-glow::before,
+    .hero-glow::after {
+      content: '';
+      position: absolute;
+      border-radius: 9999px;
+      filter: blur(100px);
+      opacity: 0.8;
+    }
+    .hero-glow::before {
+      width: 420px;
+      height: 420px;
+      top: -120px;
+      left: -120px;
+      background: rgba(168, 85, 247, 0.18);
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-glow::after {
+      width: 520px;
+      height: 520px;
+      bottom: -140px;
+      right: -140px;
+      background: rgba(56, 189, 248, 0.14);
+      animation: float 8s ease-in-out infinite reverse;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(20px); }
+    }
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+    }
+    .menu-toggle span {
+      width: 24px;
+      height: 2px;
+      background: white;
+      border-radius: 2px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .menu-toggle.active span:nth-child(1) {
+      transform: rotate(45deg) translateY(12px);
+    }
+    .menu-toggle.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .menu-toggle.active span:nth-child(3) {
+      transform: rotate(-45deg) translateY(-12px);
+    }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+      nav.nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(12, 18, 33, 0.95);
+        border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+        border-top: 1px solid rgba(148, 163, 184, 0.1);
+        backdrop-filter: blur(18px);
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+        z-index: 40;
+      }
+      nav.nav-menu.active {
+        display: flex;
+      }
+    }
+    .carousel {
+      display: flex;
+      gap: 32px;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 12px;
+    }
+    .carousel::-webkit-scrollbar {
+      height: 4px;
+    }
+    .carousel::-webkit-scrollbar-track {
+      background: rgba(148, 163, 184, 0.1);
+      border-radius: 2px;
+    }
+    .carousel::-webkit-scrollbar-thumb {
+      background: rgba(96, 165, 250, 0.3);
+      border-radius: 2px;
+    }
+    .carousel-item {
+      flex-shrink: 0;
+      width: 350px;
+    }
+    @media (min-width: 768px) {
+      .carousel-item {
+        width: 420px;
+      }
+    }
+    .testimonial-card {
+      background: rgba(12, 18, 33, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.1);
+      border-radius: 1.5rem;
+      padding: 32px;
+      backdrop-filter: blur(18px);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      height: 100%;
+    }
+    .testimonial-card:hover {
+      border-color: rgba(148, 163, 184, 0.2);
+      box-shadow: 0 20px 80px rgba(56, 189, 248, 0.1);
+      transform: translateY(-2px);
+    }
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .cta-section {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.12) 0%, rgba(56, 189, 248, 0.12) 100%);
+      border: 1px solid rgba(148, 163, 184, 0.15);
+    }
+  </style>
 </head>
-<body>
-    <h1>Salut Toni !</h1>
+<body class="antialiased">
+  <div class="relative overflow-hidden">
+    <div class="hero-glow"></div>
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <header class="relative z-50 border-b border-white/10 py-6">
+        <div class="flex items-center justify-between">
+          <a href="#" class="text-xl font-semibold tracking-tight text-white">Resend</a>
+          <div class="flex items-center gap-3">
+            <div class="hidden md:flex items-center gap-10 text-sm">
+              <a href="#features" class="text-slate-300 transition hover:text-white">Features</a>
+              <a href="#pricing" class="text-slate-300 transition hover:text-white">Pricing</a>
+              <a href="#docs" class="text-slate-300 transition hover:text-white">Docs</a>
+            </div>
+            <div class="flex items-center gap-3">
+              <a href="#login" class="hidden sm:inline-flex rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200 transition hover:border-slate-400 hover:text-white">Log in</a>
+              <a href="#signup" class="rounded-full bg-white px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-slate-100 glow-button">Get started</a>
+            </div>
+            <button class="menu-toggle md:hidden" onclick="toggleMenu()" aria-label="Menu">
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+        </div>
+        <nav class="nav-menu hidden flex-col gap-4 pt-4 text-sm text-slate-300 md:hidden">
+          <a href="#features" class="transition hover:text-white">Features</a>
+          <a href="#pricing" class="transition hover:text-white">Pricing</a>
+          <a href="#docs" class="transition hover:text-white">Docs</a>
+          <a href="#company" class="transition hover:text-white">Company</a>
+        </nav>
+      </header>
+
+      <main class="relative z-10 pt-10 pb-24">
+        <section class="grid gap-12 lg:grid-cols-[1.05fr_.95fr] lg:items-end fade-in">
+          <div class="space-y-8">
+            <div class="inline-flex items-center gap-3 rounded-full border border-slate-600/80 bg-white/5 px-4 py-2 text-sm text-slate-200 ring-1 ring-white/5">
+              <span class="rounded-full bg-violet-400 p-1"></span>
+              Announcing Resend Forward
+            </div>
+            <div class="space-y-6">
+              <h1 class="max-w-3xl text-5xl font-semibold tracking-tight text-white sm:text-6xl">Email for developers</h1>
+              <p class="max-w-2xl text-lg leading-8 text-slate-300">The best way to reach humans instead of spam folders. Deliver transactional and marketing emails at scale.</p>
+            </div>
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <a href="#signup" class="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-950 transition duration-300 hover:bg-slate-100 glow-button">Get started</a>
+              <a href="https://resend.com/docs" class="inline-flex items-center justify-center rounded-full border border-slate-600 bg-slate-950/10 px-6 py-3 text-sm font-semibold text-slate-200 transition duration-300 hover:border-slate-400 hover:text-white">Documentation</a>
+            </div>
+          </div>
+
+          <div class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/40 glass-card">
+            <div class="absolute -right-16 top-0 h-72 w-72 rounded-full bg-sky-500/10 blur-3xl"></div>
+            <div class="flex flex-col gap-6">
+              <div class="space-y-4">
+                <div class="rounded-3xl bg-slate-900/80 p-4 text-sm text-slate-300 ring-1 ring-white/10">Integrate</div>
+                <div class="grid gap-3 sm:grid-cols-2">
+                  <div class="rounded-3xl border border-white/10 bg-slate-900/70 p-5 transition hover:border-white/20 hover:bg-slate-900/80">
+                    <p class="text-sm uppercase tracking-[0.3em] text-cyan-300">Node.js</p>
+                    <p class="mt-4 text-lg font-semibold text-white">Modern SDK</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-400">Send emails with the official Node.js library.</p>
+                  </div>
+                  <div class="rounded-3xl border border-white/10 bg-slate-900/70 p-5 transition hover:border-white/20 hover:bg-slate-900/80">
+                    <p class="text-sm uppercase tracking-[0.3em] text-cyan-300">REST</p>
+                    <p class="mt-4 text-lg font-semibold text-white">Universal API</p>
+                    <p class="mt-3 text-sm leading-6 text-slate-400">Works with any backend or language.</p>
+                  </div>
+                </div>
+              </div>
+              <div class="rounded-[1.75rem] border border-white/10 bg-[#07101f] p-5 shadow-xl shadow-slate-950/20">
+                <div class="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 pb-4 text-slate-400">
+                  <span class="rounded-full bg-slate-900/60 px-3 py-1 text-xs uppercase tracking-[0.35em]">Node.js</span>
+                  <button class="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-slate-200 transition hover:bg-white/10">Copy</button>
+                </div>
+                <pre class="mt-4 overflow-x-auto text-sm leading-6 text-slate-100"><code>import { Resend } from 'resend';
+
+const resend = new Resend('re_xxxxxxxxx');
+
+const { data, error } = await resend.emails.send({
+  from: 'onboarding@resend.dev',
+  to: 'delivered@resend.dev',
+  subject: 'Hello World',
+  html: '&lt;strong&gt;it works!&lt;/strong&gt;',
+});
+</code></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-16 flex flex-col gap-6 fade-in">
+          <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/70">Companies of all sizes trust Resend to deliver their most important emails.</p>
+          <div class="grid grid-cols-2 gap-4 sm:grid-cols-4 xl:grid-cols-6">
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="hidden xl:block mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+            <img src="https://placehold.co/120x36/0f172a/94a3b8?text=Logo" alt="Company logo" class="hidden xl:block mx-auto h-9 w-auto rounded-2xl bg-slate-900/80 p-2 transition hover:bg-slate-800" />
+          </div>
+        </section>
+
+        <section id="features" class="mt-24 grid gap-12 lg:grid-cols-[1.1fr_.9fr] lg:items-start fade-in">
+          <div class="space-y-6">
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/70">Integrate</p>
+            <h2 class="max-w-2xl text-3xl font-semibold tracking-tight text-white sm:text-4xl">Simple, elegant interface for sending emails in minutes.</h2>
+            <p class="max-w-xl text-base leading-7 text-slate-300">It fits right into your code with SDKs for your favorite programming languages.</p>
+            <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 glass-card">
+              <div class="flex flex-wrap gap-3">
+                <span class="rounded-full bg-slate-900/70 px-3 py-2 text-xs uppercase tracking-[0.35em] text-slate-300">Node.js</span>
+                <span class="rounded-full bg-slate-900/70 px-3 py-2 text-xs uppercase tracking-[0.35em] text-slate-300">Serverless</span>
+                <span class="rounded-full bg-slate-900/70 px-3 py-2 text-xs uppercase tracking-[0.35em] text-slate-300">Ruby</span>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 glass-card">
+              <div class="rounded-3xl bg-slate-900/80 p-4 text-sm text-slate-300 ring-1 ring-white/10 mb-6">Test mode</div>
+              <p class="text-sm leading-7 text-slate-300">Send test emails without reaching real recipients. Simulate all event types instantly.</p>
+            </div>
+            <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-6 shadow-2xl shadow-slate-950/20 glass-card">
+              <div class="rounded-3xl bg-slate-900/80 p-4 text-sm text-slate-300 ring-1 ring-white/10 mb-6">Webhooks</div>
+              <p class="text-sm leading-7 text-slate-300">Receive real-time notifications. Track delivered, opened, bounced, and clicked events.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-24 grid gap-12 lg:grid-cols-2 lg:items-stretch fade-in">
+          <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 glass-card">
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/70">Editor</p>
+            <h2 class="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">A modern editor for anyone to write emails.</h2>
+            <p class="mt-4 max-w-xl text-base leading-7 text-slate-300">Visually build your email and change the design by adding custom styles.</p>
+            <div class="mt-8 overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#07101f] p-5 shadow-xl shadow-slate-950/15">
+              <div class="h-48 rounded-lg bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950"></div>
+            </div>
+          </div>
+          <div class="rounded-[2rem] border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 glass-card">
+            <div class="rounded-[1.5rem] bg-slate-900/80 p-6 text-center text-slate-300">
+              <div class="mb-4 h-64 rounded-[1.25rem] bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950"></div>
+              <p class="text-sm">Email preview</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-24 space-y-10 fade-in">
+          <div class="space-y-6 text-center">
+            <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/70">Testimonials</p>
+            <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Loved by developers worldwide</h2>
+            <p class="mx-auto max-w-2xl text-base leading-7 text-slate-300">Join thousands of developers who trust Resend for email infrastructure.</p>
+          </div>
+          <div class="carousel">
+            <div class="carousel-item">
+              <div class="testimonial-card">
+                <p class="text-base leading-7 text-slate-300">"As of our last deployment all of our emails are using Resend. We are loving the development experience of React Email."</p>
+                <div class="mt-6 flex items-center gap-4">
+                  <div class="h-10 w-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-white">Adam Rankin</p>
+                    <p class="text-xs text-slate-400">Founding Engineer at Warp</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-card">
+                <p class="text-base leading-7 text-slate-300">"Working with Resend has been amazing. By using Webhooks, I'm able to track email events. I highly believe in the Resend team."</p>
+                <div class="mt-6 flex items-center gap-4">
+                  <div class="h-10 w-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-white">Taylor Facen</p>
+                    <p class="text-xs text-slate-400">Founder of Finta</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-card">
+                <p class="text-base leading-7 text-slate-300">"Resend is super easy to set up. Loving the modern approach the team is taking with email. Never been a fan of other tools."</p>
+                <div class="mt-6 flex items-center gap-4">
+                  <div class="h-10 w-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-white">Brek Goin</p>
+                    <p class="text-xs text-slate-400">Founder of Hammr</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <div class="testimonial-card">
+                <p class="text-base leading-7 text-slate-300">"Our team loves Resend. It makes email sending so easy and reliable. Our deliverability improved tremendously."</p>
+                <div class="mt-6 flex items-center gap-4">
+                  <div class="h-10 w-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-800"></div>
+                  <div>
+                    <p class="text-sm font-semibold text-white">Vlad Matsiiako</p>
+                    <p class="text-xs text-slate-400">Co-founder of Infisical</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="ai" class="mt-24 rounded-[2rem] border border-white/10 bg-slate-950/80 p-8 shadow-2xl shadow-slate-950/20 glass-card fade-in">
+          <div class="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
+            <div class="space-y-4">
+              <p class="text-sm uppercase tracking-[0.35em] text-cyan-200/70">React Email</p>
+              <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-4xl">Create beautiful templates without table layouts.</h2>
+              <p class="max-w-2xl text-base leading-7 text-slate-300">Powered by react-email, our open source component library.</p>
+              <div class="flex flex-wrap gap-3">
+                <a href="#signup" class="inline-flex items-center justify-center rounded-full bg-white px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-slate-100 glow-button">Get started</a>
+                <a href="https://react.email/docs" class="inline-flex items-center justify-center rounded-full border border-slate-600 bg-slate-950/10 px-5 py-3 text-sm font-semibold text-slate-200 transition hover:border-slate-400 hover:text-white">Docs</a>
+              </div>
+            </div>
+            <div class="rounded-[1.75rem] border border-white/10 bg-[#07101f] p-5 shadow-xl shadow-slate-950/15">
+              <div class="h-64 rounded-lg bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="mt-24 rounded-[2rem] cta-section p-12 text-center fade-in">
+          <div class="space-y-6">
+            <h2 class="text-3xl font-semibold tracking-tight text-white sm:text-5xl">Ready to improve your email?</h2>
+            <p class="mx-auto max-w-2xl text-base leading-7 text-slate-300">Start sending emails in minutes with Resend. No credit card required.</p>
+            <div class="flex flex-col gap-4 justify-center sm:flex-row">
+              <a href="#signup" class="inline-flex items-center justify-center rounded-full bg-white px-8 py-4 text-sm font-semibold text-slate-950 transition hover:bg-slate-100 glow-button">Create free account</a>
+              <a href="https://resend.com/docs" class="inline-flex items-center justify-center rounded-full border border-slate-600 bg-slate-950/10 px-8 py-4 text-sm font-semibold text-slate-200 transition hover:border-slate-400 hover:text-white">View documentation</a>
+            </div>
+          </div>
+        </section>
+
+        <footer class="mt-24 border-t border-white/10 pt-12 pb-20">
+          <div class="grid gap-10 md:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p class="text-lg font-semibold text-white">Resend</p>
+              <p class="mt-4 max-w-sm text-sm leading-6 text-slate-400">Email infrastructure for developers with clean APIs, modern templates, and reliable delivery.</p>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-200">Product</p>
+              <ul class="mt-4 space-y-3 text-sm text-slate-400">
+                <li><a href="#features" class="transition hover:text-white">Integrate</a></li>
+                <li><a href="#ai" class="transition hover:text-white">React email</a></li>
+                <li><a href="#pricing" class="transition hover:text-white">Pricing</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-200">Resources</p>
+              <ul class="mt-4 space-y-3 text-sm text-slate-400">
+                <li><a href="https://resend.com/docs" class="transition hover:text-white">Docs</a></li>
+                <li><a href="https://resend.com/blog" class="transition hover:text-white">Blog</a></li>
+                <li><a href="https://react.email/docs" class="transition hover:text-white">React docs</a></li>
+              </ul>
+            </div>
+            <div>
+              <p class="font-semibold text-slate-200">Company</p>
+              <ul class="mt-4 space-y-3 text-sm text-slate-400">
+                <li><a href="#company" class="transition hover:text-white">About</a></li>
+                <li><a href="#help" class="transition hover:text-white">Help</a></li>
+                <li><a href="#contact" class="transition hover:text-white">Contact</a></li>
+              </ul>
+            </div>
+          </div>
+          <div class="mt-12 border-t border-white/10 pt-8 text-center text-sm text-slate-400">
+            <p>&copy; 2026 Resend. All rights reserved.</p>
+          </div>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function toggleMenu() {
+      const toggle = document.querySelector('.menu-toggle');
+      const menu = document.querySelector('.nav-menu');
+      toggle.classList.toggle('active');
+      menu.classList.toggle('active');
+    }
+
+    document.querySelectorAll('.nav-menu a').forEach(link => {
+      link.addEventListener('click', () => {
+        const toggle = document.querySelector('.menu-toggle');
+        const menu = document.querySelector('.nav-menu');
+        toggle.classList.remove('active');
+        menu.classList.remove('active');
+      });
+    });
+
+    const carousel = document.querySelector('.carousel');
+    if (carousel) {
+      let isDown = false;
+      let startX;
+      let scrollLeft;
+
+      carousel.addEventListener('mousedown', (e) => {
+        isDown = true;
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+      });
+
+      carousel.addEventListener('mouseleave', () => {
+        isDown = false;
+      });
+
+      carousel.addEventListener('mouseup', () => {
+        isDown = false;
+      });
+
+      carousel.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 1;
+        carousel.scrollLeft = scrollLeft - walk;
+      });
+    }
+  </script>
 </body>
 </html>

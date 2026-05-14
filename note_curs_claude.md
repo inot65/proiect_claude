@@ -260,3 +260,40 @@ context7  - aduce documentatiile la zi si le compreseaza prin compactare
 Subagenti
 =========
 
+exista un agenta parinte care poate folosii pentru pararelizare munca o serie de subagenti.
+
+Subagentii din Agent Teams lucreaza in izolare (nu comunica unul cu altul) si transmit rezultatul vatre parinte apoi se opresc. Ei nu pot crea subagenti !
+
+Comparartie intre subagenti si Agent Teams
+------------------------------------------
+
+Subagentii pot face agenti copii care comunica intre ei, isi impartasesc din descoperiri si erori, pentru a evita repetarea lor.
+
+Git worktrees
+=============
+
+este precursorul lui Agent Teams
+
+faci ca un un singur sub-agent sa lucreze pe un branch al repositoriului, si apoi agentul parinte sa se ocupe de merge final, pentru a imbina toate rezultatele subagentilor in branch-ul principal
+
+
+
+
+Modal (faci deploy API cu Modal)
+================================
+
+e o modalitate de a simplifica deploymentul
+
+link:  modal.com
+
+
+"n8n cloud" face ceva similar
+
+
+zapier.com, make.com face ceva similar
+
+
+poti pune pe web unele skill-uri care se vor declansa daca intrii pe link-ul dat !
+
+Mai nou, Claude Code a introdus "routines" care e cam tot aia, numai ca e integrat direct in Claude Code
+
